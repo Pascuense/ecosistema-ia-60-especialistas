@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>🦁 Ecosistema IA — 60 Especialistas</title>
+<style>
+:root{
+  --bg:#0f1117;--bg2:#161b27;--bg3:#1e2535;--border:#2a3347;
+  --accent:#f5a623;--accent2:#e8922a;--green:#10b981;--red:#ef4444;
+  --blue:#3b82f6;--purple:#8b5cf6;--text:#e2e8f0;--text2:#94a3b8;
+  --text3:#64748b;--radius:12px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);height:100vh;display:flex;flex-direction:column;overflow:hidden}
+header{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 20px;height:56px;display:flex;align-items:center;gap:14px;flex-shrink:0;z-index:100}
+.logo{font-size:20px;font-weight:800;color:var(--accent);white-space:nowrap}
+.logo small{color:var(--text2);font-weight:400;font-size:12px;margin-left:8px}
+.hright{margin-left:auto;display:flex;align-items:center;gap:8px}
+.key-input{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:5px 10px;color:var(--text);font-size:12px;outline:none;width:230px}
+.key-input:focus{border-color:var(--accent)}
+.key-input.ok{border-color:var(--green)}
+.btn-fire{padding:6px 16px;border-radius:20px;border:none;background:linear-gradient(135deg,#f5a623,#e8432d);color:#000;font-weight:800;font-size:12px;cursor:pointer;transition:all .15s;letter-spacing:.5px}
+.btn-fire:hover{transform:scale(1.04);box-shadow:0 0 16px rgba(245,166,35,.4)}
+.status-dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green)}
+.status-dot.off{background:var(--red);box-shadow:0 0 6px var(--red)}
+.main{display:flex;flex:1;overflow:hidden}
+/* SIDEBAR */
+.sidebar{width:270px;min-width:270px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+.sh{padding:10px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+.sh-title{font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:1px}
+.cnt{background:var(--accent);color:#000;font-size:10px;font-weight:800;padding:2px 6px;border-radius:10px}
+.sb-search{margin:8px 10px;padding:7px 10px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:12px;outline:none;width:calc(100% - 20px)}
+.sb-search:focus{border-color:var(--accent)}
+.sb-list{flex:1;overflow-y:auto;padding:2px 6px 10px}
+.sb-list::-webkit-scrollbar{width:3px}
+.sb-list::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.cat-h{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;padding:10px 6px 4px}
+.sp-card{padding:7px 8px;border-radius:8px;cursor:pointer;transition:all .12s;margin-bottom:1px;border:1px solid transparent;display:flex;align-items:center;gap:6px}
+.sp-card:hover{background:var(--bg3);border-color:var(--border)}
+.sp-card.sel{background:rgba(245,166,35,.12);border-color:rgba(245,166,35,.3)}
+.sp-card.busy{border-color:var(--accent)}
+.sp-card.done{border-color:var(--green)}
+.sp-id{font-size:10px;font-weight:700;color:var(--text3);min-width:22px}
+.sp-info{flex:1;min-width:0}
+.sp-name{font-size:11px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sp-tag{font-size:10px;color:var(--text3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sp-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.sp-dot.r{background:var(--accent);animation:pulse 1s infinite}
+.sp-dot.d{background:var(--green)}
+.sp-dot.e{background:var(--red)}
+/* CHAT */
+.chat{flex:1;display:flex;flex-direction:column;min-width:0}
+.msgs{flex:1;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:14px}
+.msgs::-webkit-scrollbar{width:5px}
+.msgs::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+.msg-u{display:flex;justify-content:flex-end}
+.bubble-u{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#000;padding:9px 14px;border-radius:16px 16px 4px 16px;max-width:70%;font-size:13px;font-weight:500;line-height:1.5}
+.msg-s{display:flex;gap:8px;align-items:flex-start}
+.av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;background:var(--bg3);border:1px solid var(--border)}
+.mc{flex:1;min-width:0}
+.mh{display:flex;align-items:center;gap:6px;margin-bottom:3px}
+.mn{font-size:11px;font-weight:700;color:var(--accent)}
+.mcat{font-size:10px;color:var(--text3)}
+.mt{font-size:10px;color:var(--text3);margin-left:auto}
+.mb{background:var(--bg2);border:1px solid var(--border);border-radius:4px 14px 14px 14px;padding:10px 14px;font-size:12px;line-height:1.65;color:var(--text)}
+/* routing card */
+.rc{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:10px 14px;display:flex;align-items:flex-start;gap:8px;font-size:12px}
+.rc-info{flex:1}
+.rc-title{font-weight:700;color:var(--text2);margin-bottom:5px;font-size:11px;text-transform:uppercase;letter-spacing:.5px}
+.chip{display:inline-block;padding:2px 7px;border-radius:10px;font-size:10px;font-weight:600;background:rgba(245,166,35,.15);border:1px solid rgba(245,166,35,.3);color:var(--accent);margin:2px}
+/* progress */
+.prog-wrap{margin-top:8px}
+.prog-bar{height:3px;background:var(--border);border-radius:2px;overflow:hidden;margin-top:5px}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--green));border-radius:2px;transition:width .3s}
+.prog-lbl{font-size:10px;color:var(--text3);display:flex;justify-content:space-between}
+/* results */
+.res-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:8px;margin-top:10px}
+.res-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:10px;border-left:3px solid var(--green)}
+.res-card.err{border-left-color:var(--red);opacity:.7}
+.rch{display:flex;align-items:center;gap:6px;margin-bottom:6px}
+.rcid{font-size:10px;font-weight:700;color:var(--text3);background:var(--bg3);padding:1px 5px;border-radius:4px}
+.rcn{font-size:11px;font-weight:700;flex:1}
+.rct{font-size:10px;color:var(--text3)}
+.rcb{font-size:11px;color:var(--text2);line-height:1.6;max-height:100px;overflow:hidden;position:relative}
+.rcb::after{content:'';position:absolute;bottom:0;left:0;right:0;height:30px;background:linear-gradient(transparent,var(--bg2))}
+.rc-more{font-size:10px;color:var(--accent);cursor:pointer;margin-top:4px}
+/* activity log */
+.act-log{background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:10px 12px;font-size:11px;margin-top:6px;max-height:160px;overflow-y:auto}
+.act-log::-webkit-scrollbar{width:3px}.act-log::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.act-row{display:flex;align-items:center;gap:7px;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.04);animation:fadeIn .2s}
+.act-row:last-child{border-bottom:none}
+.act-icon{width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0}
+.act-icon.spin{background:rgba(245,166,35,.2);border:1px solid var(--accent);animation:spin .8s linear infinite}
+.act-icon.done{background:rgba(16,185,129,.2);border:1px solid var(--green)}
+.act-icon.err{background:rgba(239,68,68,.2);border:1px solid var(--red)}
+.act-name{font-weight:600;color:var(--text);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.act-status{color:var(--text3);font-size:10px;white-space:nowrap}
+.act-ms{color:var(--text3);font-size:9px;margin-left:4px}
+@keyframes spin{to{transform:rotate(360deg)}}
+/* continuation */
+.cont-bar{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;padding:8px 0 4px}
+.cont-btn{padding:6px 13px;border-radius:20px;border:1px solid var(--border);background:var(--bg2);color:var(--text2);font-size:11px;cursor:pointer;transition:all .15s;font-family:inherit}
+.cont-btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(245,166,35,.08)}
+.cont-btn.primary{border-color:var(--accent);color:var(--accent);background:rgba(245,166,35,.1)}
+/* welcome */
+.welcome{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;text-align:center;padding:40px;gap:14px;color:var(--text2)}
+.welcome h2{font-size:20px;font-weight:700;color:var(--text)}
+.welcome p{font-size:13px;max-width:420px;line-height:1.7}
+.tips{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:6px}
+.tip{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:11px;color:var(--text2);cursor:pointer;transition:all .15s}
+.tip:hover{border-color:var(--accent);color:var(--accent)}
+/* input */
+.input-bar{padding:10px 14px;background:var(--bg2);border-top:1px solid var(--border);display:flex;gap:8px;align-items:flex-end}
+.input-wrap{flex:1}
+.input-meta{display:flex;gap:5px;align-items:center;margin-bottom:5px;flex-wrap:wrap}
+.mchip{padding:4px 9px;border-radius:10px;font-size:10px;font-weight:700;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--text3);transition:all .12s}
+.mchip:hover{border-color:var(--accent);color:var(--accent)}
+.mchip.on{background:rgba(245,166,35,.15);border-color:var(--accent);color:var(--accent)}
+.info-txt{font-size:10px;color:var(--text3);margin-left:auto}
+textarea{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:13px;padding:10px 12px;resize:none;outline:none;min-height:44px;max-height:140px;line-height:1.5;font-family:inherit;transition:border-color .2s}
+textarea:focus{border-color:var(--accent)}
+textarea::placeholder{color:var(--text3)}
+.send{width:42px;height:42px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#000;cursor:pointer;font-size:17px;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0}
+.send:hover{transform:scale(1.08)}
+.send:disabled{opacity:.4;cursor:not-allowed;transform:none}
+/* modal */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);display:flex;align-items:center;justify-content:center;z-index:999;padding:20px;backdrop-filter:blur(4px)}
+.overlay.h{display:none}
+.modal{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:22px;max-width:600px;width:100%;max-height:80vh;overflow-y:auto}
+.modal h3{font-size:15px;font-weight:700;margin-bottom:10px}
+.modal pre{background:var(--bg3);border-radius:8px;padding:12px;font-size:11px;line-height:1.7;color:var(--text2);white-space:pre-wrap;word-break:break-word;overflow-y:auto;max-height:380px}
+.mc-close{float:right;cursor:pointer;color:var(--text3);font-size:18px;background:none;border:none}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.fi{animation:fadeIn .2s ease forwards}
+.typing{display:inline-flex;gap:3px;align-items:center;height:12px}
+.typing span{width:4px;height:4px;border-radius:50%;background:var(--text3);animation:bounce 1.2s infinite}
+.typing span:nth-child(2){animation-delay:.2s}
+.typing span:nth-child(3){animation-delay:.4s}
+@keyframes bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-4px)}}
+/* file chip */
+.file-chip{display:flex;align-items:center;gap:6px;background:rgba(245,166,35,.12);border:1px solid rgba(245,166,35,.3);border-radius:8px;padding:5px 10px;font-size:11px;color:var(--accent);margin:0 0 6px 0;max-width:100%}
+.file-chip span{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.file-chip button{background:none;border:none;color:var(--text3);cursor:pointer;font-size:14px;padding:0;line-height:1}
+.file-chip button:hover{color:var(--red)}
+.file-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(245,166,35,.15);border:1px solid rgba(245,166,35,.25);border-radius:6px;padding:2px 7px;font-size:10px;color:var(--accent);margin-top:4px}
+.btn-attach{width:36px;height:36px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0}
+.btn-attach:hover{border-color:var(--accent);color:var(--accent)}
+</style>
+<!-- PDF.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<!-- mammoth.js for .docx -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+</head>
+<body>
+
+<header>
+  <div class="logo">🦁 Ecosistema IA <small>60 Especialistas</small></div>
+  <div class="status-dot" id="dot" style="background:var(--green);box-shadow:0 0 6px var(--green)"></div>
+  <span id="stxt" style="font-size:11px;color:var(--text3)">Listo</span>
+  <div class="hright">
+    <button class="btn-fire" onclick="fireAll()">🔥 ALL 60</button>
+  </div>
+</header>
+
+<div class="main">
+  <aside class="sidebar">
+    <div class="sh">
+      <span class="sh-title">Especialistas</span>
+      <span class="cnt">60</span>
+    </div>
+    <input class="sb-search" type="text" placeholder="🔍 Buscar..." oninput="filterSidebar(this.value)" />
+    <div class="sb-list" id="sbList"></div>
+  </aside>
+
+  <div class="chat">
+    <div class="msgs" id="msgs">
+      <div class="welcome" id="welcome">
+        <div style="font-size:60px">🦁</div>
+        <h2>Ecosistema de 60 Especialistas de IA</h2>
+        <p>Pega tu <strong>Anthropic API key</strong> arriba, luego escribe tu consulta.<br>
+        El Router Maestro elegirá los mejores especialistas automáticamente.</p>
+        <div class="tips">
+          <div class="tip" onclick="useTip(this)">Crea una estrategia de marketing digital</div>
+          <div class="tip" onclick="useTip(this)">Diseña un agente IA autónomo</div>
+          <div class="tip" onclick="useTip(this)">Plan de RRHH para startup de 20 personas</div>
+          <div class="tip" onclick="useTip(this)">Desarrolla una API REST en Python</div>
+          <div class="tip" onclick="useTip(this)">Análisis de riesgos legales en mi app</div>
+          <div class="tip" onclick="useTip(this)">Crea un podcast profesional desde cero</div>
+        </div>
+      </div>
+    </div>
+    <div class="input-bar">
+      <div class="input-wrap">
+        <div class="input-meta">
+          <button class="mchip on" id="m-auto" onclick="setMode('auto')">🤖 Auto</button>
+          <button class="mchip" id="m-sel" onclick="setMode('team')" style="display:none">👥 Sel. (<span id="selN">0</span>)</button>
+          <button class="mchip" id="m-seq" onclick="setMode('seq')" style="display:none">🔗 Pipeline</button>
+          <span class="info-txt" id="infoTxt">Router Maestro decide</span>
+        </div>
+        <div id="filesPreviewArea" style="display:none;flex-wrap:wrap;gap:4px;margin:0 0 6px 0"></div>
+        <textarea id="inp" rows="1" placeholder="Escribe aquí... (Enter envía, Shift+Enter nueva línea)"
+          onkeydown="onKey(event)" oninput="resize(this)"></textarea>
+      </div>
+      <input type="file" id="fileInput" style="display:none" multiple
+        accept=".txt,.md,.csv,.json,.pdf,.docx,.js,.ts,.jsx,.tsx,.py,.html,.xml,.yaml,.yml,.sql,.sh,.log,.pptx,.xlsx,.png,.jpg,.jpeg,.gif,.webp,.bmp,.svg"
+        onchange="handleFiles(this)">
+      <button class="btn-attach" onclick="document.getElementById('fileInput').click()" title="Subir archivos o imágenes (múltiples)">📎</button>
+      <button class="send" id="sendBtn" onclick="send()">➤</button>
+    </div>
+  </div>
+</div>
+
+<div class="overlay h" id="overlay" onclick="closeModal(event)">
+  <div class="modal">
+    <button class="mc-close" onclick="document.getElementById('overlay').classList.add('h')">✕</button>
+    <h3 id="mTitle"></h3>
+    <pre id="mBody"></pre>
+  </div>
+</div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────────
+let SPECIALISTS = [];
+
+const CAT_EMOJI = {'IA':'🧠','Texto':'✍️','Diseño':'🎨','Video':'🎬','Tecnología':'💻','Negocio':'📈','Finanzas':'⚖️','Salud':'🏥'};
+function catEmoji(c){for(const[k,v]of Object.entries(CAT_EMOJI))if(c&&c.includes(k))return v;return '🤖'}
+
+// ── STATE ─────────────────────────────────────────────────────────────────
+let apiKey='BACKEND', mode='auto', busy=false, selected=new Set();
+let progress={done:0,total:0};
+let uploadedFiles=[]; // array of {name, content, size, isImage, base64, mimeType}
+
+// ── FILE HANDLING ──────────────────────────────────────────────────────────
+async function handleFiles(input){
+  const files=Array.from(input.files);
+  if(!files.length)return;
+  input.value='';
+  toast('📂 Leyendo '+files.length+' archivo(s)...','warn');
+
+  for(const file of files){
+    if(file.size>20*1024*1024){toast('❌ '+file.name+' muy grande (máx 20MB)');continue;}
+    const ext=file.name.split('.').pop().toLowerCase();
+    const sizeMB=(file.size/1024/1024).toFixed(1);
+    const imgExts=['png','jpg','jpeg','gif','webp','bmp'];
+    try{
+      if(imgExts.includes(ext)){
+        const {base64,mimeType}=await readImage(file);
+        uploadedFiles.push({name:file.name,size:sizeMB+'MB',isImage:true,base64,mimeType});
+      } else {
+        let content='';
+        if(['txt','md','csv','json','js','ts','jsx','tsx','py','html','xml','yaml','yml','sql','sh','log','toml','ini','env','css','scss','rs','go','java','c','cpp','h','rb','php','swift','kt','svg'].includes(ext)){
+          content=await readText(file);
+        } else if(ext==='pdf'){
+          content=await readPDF(file);
+        } else if(ext==='docx'){
+          content=await readDocx(file);
+        } else if(ext==='xlsx'||ext==='xls'){
+          content='[Excel: '+file.name+'] — Exporta como CSV para mejor análisis.';
+        } else if(ext==='pptx'){
+          content='[PowerPoint: '+file.name+'] — Exporta como PDF para mejor análisis.';
+        } else {
+          content='[Archivo: '+file.name+']';
+        }
+        const chars=content.length;
+        const perFileLimit=Math.floor(12000/Math.max(files.length,1));
+        const preview=chars>perFileLimit?content.substring(0,perFileLimit)+'\n[...truncado de '+chars+' chars...]':content;
+        uploadedFiles.push({name:file.name,content:preview,size:sizeMB+'MB',chars,isImage:false});
+      }
+    }catch(e){toast('❌ Error en '+file.name+': '+e.message);}
+  }
+  renderFilePreviews();
+  toast('✅ '+uploadedFiles.length+' archivo(s) listos','ok');
+}
+
+function renderFilePreviews(){
+  const area=document.getElementById('filesPreviewArea');
+  if(!uploadedFiles.length){area.style.display='none';area.innerHTML='';return;}
+  area.style.display='flex';
+  area.innerHTML=uploadedFiles.map((f,i)=>{
+    if(f.isImage){
+      return `<div style="position:relative;display:inline-block">
+        <img src="data:${f.mimeType};base64,${f.base64}" style="height:60px;width:60px;object-fit:cover;border-radius:8px;border:1px solid var(--border)" title="${f.name}"/>
+        <button onclick="removeFile(${i})" style="position:absolute;top:-4px;right:-4px;background:var(--red);border:none;border-radius:50%;width:16px;height:16px;font-size:9px;color:#fff;cursor:pointer;line-height:1;padding:0">✕</button>
+      </div>`;
+    } else {
+      const icon=f.name.endsWith('.pdf')?'📕':f.name.endsWith('.docx')?'📘':f.name.match(/\.(py|js|ts|jsx|tsx|rs|go|java|cpp|c|rb|php)$/)?'💻':'📄';
+      return `<div class="file-chip" style="margin:0;max-width:180px">
+        <span>${icon}</span><span title="${f.name}" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:110px">${f.name}</span>
+        <span style="color:var(--text3);font-size:9px">${f.size}</span>
+        <button onclick="removeFile(${i})" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:13px;padding:0;line-height:1">✕</button>
+      </div>`;
+    }
+  }).join('');
+}
+
+function removeFile(i){
+  uploadedFiles.splice(i,1);
+  renderFilePreviews();
+  if(uploadedFiles.length)toast(uploadedFiles.length+' archivo(s) restantes','warn');
+  else toast('Todos los archivos quitados','warn');
+}
+
+function clearFile(){
+  uploadedFiles=[];
+  renderFilePreviews();
+}
+
+function readImage(file){
+  return new Promise((res,rej)=>{
+    const r=new FileReader();
+    r.onload=e=>{
+      const dataUrl=e.target.result;
+      const base64=dataUrl.split(',')[1];
+      const mimeType=file.type||'image/jpeg';
+      res({base64,mimeType});
+    };
+    r.onerror=()=>rej(new Error('No se pudo leer la imagen'));
+    r.readAsDataURL(file);
+  });
+}
+
+function readText(file){
+  return new Promise((res,rej)=>{
+    const r=new FileReader();
+    r.onload=e=>res(e.target.result);
+    r.onerror=()=>rej(new Error('No se pudo leer el archivo'));
+    r.readAsText(file,'UTF-8');
+  });
+}
+
+async function readPDF(file){
+  const pdfjsLib=window['pdfjs-dist/build/pdf'];
+  if(!pdfjsLib){throw new Error('PDF.js no cargó. Verifica tu conexión.');}
+  pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  const buf=await file.arrayBuffer();
+  const pdf=await pdfjsLib.getDocument({data:buf}).promise;
+  let text='';
+  const maxPages=Math.min(pdf.numPages,50);
+  for(let i=1;i<=maxPages;i++){
+    const page=await pdf.getPage(i);
+    const tc=await page.getTextContent();
+    text+=`\n--- Página ${i} ---\n`+tc.items.map(it=>it.str).join(' ');
+  }
+  if(pdf.numPages>50)text+='\n\n[PDF tiene '+pdf.numPages+' páginas. Se leyeron las primeras 50.]';
+  return text.trim();
+}
+
+async function readDocx(file){
+  if(typeof mammoth==='undefined'){throw new Error('mammoth.js no cargó. Verifica tu conexión.');}
+  const buf=await file.arrayBuffer();
+  const result=await mammoth.extractRawText({arrayBuffer:buf});
+  return result.value||'(documento vacío)';
+}
+
+// ── TOAST ─────────────────────────────────────────────────────────────────
+function toast(msg,type='error'){
+  const t=document.createElement('div');
+  const color=type==='ok'?'#10b981':type==='warn'?'#f5a623':'#ef4444';
+  t.style.cssText='position:fixed;top:70px;right:20px;z-index:9999;padding:12px 18px;background:#1e2535;border:1px solid '+color+';border-radius:10px;color:#e2e8f0;font-size:13px;font-weight:600;max-width:400px;box-shadow:0 8px 32px rgba(0,0,0,.5);transition:opacity .4s';
+  t.textContent=msg;
+  document.body.appendChild(t);
+  setTimeout(()=>{t.style.opacity='0';setTimeout(()=>t.remove(),500)},5000);
+}
+
+// ── KEY (no-op en versión servidor) ───────────────────────────────────────
+function checkKey(v){} // API key gestionada por el servidor
+async function testConnection(){
+  try{
+    const r=await callAnthropic([{role:'user',content:'Di solo: OK'}],'Responde solo con la palabra OK.',20);
+    toast('✅ Backend funcionando: '+r,'ok');
+  }catch(e){
+    toast('❌ Error de conexión: '+e.message);
+  }
+}
+
+// ── SIDEBAR ───────────────────────────────────────────────────────────────
+function renderSidebar(list){
+  const sb=document.getElementById('sbList');
+  const cats={};
+  list.forEach(sp=>{const c=sp.category||'Otros';if(!cats[c])cats[c]=[];cats[c].push(sp)});
+  let h='';
+  for(const[cat,items]of Object.entries(cats)){
+    h+=`<div class="cat-h">${catEmoji(cat)} ${cat}</div>`;
+    items.forEach(sp=>{
+      const s=selected.has(sp.id)?'sel':'';
+      h+=`<div class="sp-card ${s}" id="spc-${sp.id}" onclick="toggle('${sp.id}',this)">
+        <span class="sp-id">${sp.id}</span>
+        <div class="sp-info"><div class="sp-name">${sp.name}</div><div class="sp-tag">${sp.tagline||sp.role||''}</div></div>
+        <div class="sp-dot" id="spd-${sp.id}"></div>
+      </div>`;
+    });
+  }
+  sb.innerHTML=h;
+}
+
+function filterSidebar(q){
+  const f=q?SPECIALISTS.filter(s=>
+    s.name.toLowerCase().includes(q.toLowerCase())||
+    s.tagline.toLowerCase().includes(q.toLowerCase())||
+    s.category.toLowerCase().includes(q.toLowerCase())||
+    s.id.includes(q)
+  ):SPECIALISTS;
+  renderSidebar(f);
+}
+
+function toggle(id,el){
+  if(selected.has(id)){selected.delete(id);el.classList.remove('sel')}
+  else{selected.add(id);el.classList.add('sel')}
+  updateModeUI();
+}
+
+function updateModeUI(){
+  const n=selected.size;
+  document.getElementById('selN').textContent=n;
+  document.getElementById('m-sel').style.display=n>0?'':'none';
+  document.getElementById('m-seq').style.display=n>1?'':'none';
+  if(n>0&&mode==='auto')setMode('team');
+  if(n===0&&(mode==='team'||mode==='seq'))setMode('auto');
+}
+
+function setMode(m){
+  mode=m;
+  ['m-auto','m-sel','m-seq'].forEach(id=>{const e=document.getElementById(id);if(e)e.classList.remove('on')});
+  const map={'auto':'m-auto','team':'m-sel','seq':'m-seq','all':'m-auto'};
+  const el=document.getElementById(map[m]||'m-auto');
+  if(el)el.classList.add('on');
+  const info={'auto':'Router Maestro decide','team':selected.size+' especialistas seleccionados','seq':'Pipeline secuencial','all':'Los 60 en paralelo'};
+  document.getElementById('infoTxt').textContent=info[m]||'';
+}
+
+// ── SEND ──────────────────────────────────────────────────────────────────
+function onKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send()}}
+function resize(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,140)+'px'}
+function useTip(el){document.getElementById('inp').value=el.textContent;send()}
+
+function fireAll(){
+  const inp=document.getElementById('inp');
+  if(!inp.value.trim()) inp.value='¿Qué puede aportar cada especialista a una empresa que quiere adoptar IA?';
+  mode='all'; send();
+}
+
+async function send(){
+  if(busy){toast('⏳ Esperando respuesta en curso...','warn');return;}
+  const inp=document.getElementById('inp');
+  const msg=inp.value.trim();
+  if(!msg)return;
+  inp.value='';inp.style.height='auto';
+  const wel=document.getElementById('welcome');
+  if(wel)wel.remove();
+  busy=true;
+  document.getElementById('sendBtn').disabled=true;
+  toast('⚡ Procesando...','warn');
+
+  addUserMsg(msg, uploadedFiles);
+  const rid='r'+Date.now(), pid='p'+Date.now(), grid='g'+Date.now();
+  addPlaceholder(rid,pid,grid);
+  // Build context from all uploaded files
+  const docFiles=uploadedFiles.filter(f=>!f.isImage);
+  const imgFiles=uploadedFiles.filter(f=>f.isImage);
+  const fileContext=docFiles.length
+    ? '\n\n---\n'+docFiles.map(f=>`📄 ARCHIVO: "${f.name}" (${f.size})\n\`\`\`\n${f.content}\n\`\`\``).join('\n\n')+'---'
+    : '';
+  const imageData=imgFiles.length?imgFiles[0]:null; // use first image for vision (API supports 1 per message)
+
+  // Determine specialists to run
+  let toRun=[];
+  if(mode==='all'){
+    toRun=SPECIALISTS;
+    showRouting(rid,{strategy:'parallel',specialists:SPECIALISTS,reasoning:'MODO ALL — los 60 especialistas en paralelo'});
+  } else if(mode==='team'||mode==='seq'){
+    toRun=SPECIALISTS.filter(s=>selected.has(s.id));
+    showRouting(rid,{strategy:mode==='seq'?'sequential':'parallel',specialists:toRun,reasoning:`${toRun.length} especialistas seleccionados`});
+  } else {
+    // Auto-route via Anthropic
+    try{
+      const routing=await autoRoute(msg+fileContext);
+      toRun=SPECIALISTS.filter(s=>routing.ids.includes(s.id));
+      if(!toRun.length)toRun=[SPECIALISTS[0]];
+      showRouting(rid,{strategy:routing.strategy,specialists:toRun,reasoning:routing.reasoning});
+    }catch(e){
+      toRun=[SPECIALISTS[0]];
+      showRouting(rid,{strategy:'single',specialists:toRun,reasoning:'Fallback al Director'});
+    }
+  }
+
+  progress={done:0,total:toRun.length};
+  if(toRun.length>1)showProgress(pid,0,toRun.length);
+  initActivityLog(rid, toRun);
+
+  const results=[];
+  const MAX=8; // concurrent limit
+
+  if(mode==='seq'){
+    // Sequential
+    let prevOutput='';
+    for(const sp of toRun){
+      markBusy(sp.id);
+      logActivity(rid,sp,'working');
+      const r=await callSpecialist(sp,msg+fileContext,prevOutput,imageData);
+      results.push(r);
+      progress.done++;
+      markDone(sp.id,r.ok);
+      updateProgress(pid,progress.done,progress.total);
+      logActivity(rid,sp,r.ok?'done':'err',r.ms);
+      if(r.ok)prevOutput=r.response;
+    }
+  }else{
+    // Parallel with concurrency limit
+    for(let i=0;i<toRun.length;i+=MAX){
+      const batch=toRun.slice(i,i+MAX);
+      batch.forEach(sp=>{markBusy(sp.id);logActivity(rid,sp,'working');});
+      const batchRes=await Promise.all(batch.map(sp=>callSpecialist(sp,msg+fileContext,'',imageData)));
+      batchRes.forEach((r,j)=>{
+        results.push(r);
+        progress.done++;
+        markDone(batch[j].id,r.ok);
+        updateProgress(pid,progress.done,progress.total);
+        logActivity(rid,batch[j],r.ok?'done':'err',r.ms);
+      });
+    }
+  }
+
+  showResults(grid,results,rid,msg);
+  busy=false;
+  document.getElementById('sendBtn').disabled=false;
+  resetDots();
+  if(uploadedFiles.length){clearFile();}
+}
+
+// ── AUTO ROUTE ────────────────────────────────────────────────────────────
+async function autoRoute(msg){
+  const catalog=SPECIALISTS.map(s=>`[${s.id}] ${s.name} — ${s.tagline||s.category}`).join('\n');
+  const sysPrompt=`Eres el Router Maestro. Analiza la solicitud y devuelve SOLO un JSON:
+{"strategy":"single|parallel|sequential","ids":["01","32"],"reasoning":"breve"}
+Selecciona entre 1-5 especialistas. Solo JSON, sin texto adicional.`;
+
+  const resp=await callAnthropic([{role:'user',content:`SOLICITUD: "${msg}"\n\nESPECIALISTAS:\n${catalog}`}],sysPrompt,300);
+  const m=resp.match(/\{[^}]+\}/s);
+  if(m){
+    const d=JSON.parse(m[0]);
+    return{ids:d.ids||['01'],strategy:d.strategy||'parallel',reasoning:d.reasoning||''};
+  }
+  return{ids:['01'],strategy:'single',reasoning:'Fallback'};
+}
+
+// ── CALL SPECIALIST ───────────────────────────────────────────────────────
+async function callSpecialist(sp,msg,context,imgData){
+  const start=Date.now();
+  let textContent=msg;
+  if(context)textContent=`${msg}\n\n---\n[CONTEXTO PREVIO]:\n${context.substring(0,800)}`;
+
+  // Build message content (text-only or multimodal with image)
+  let msgContent;
+  if(imgData){
+    msgContent=[
+      {type:'image',source:{type:'base64',media_type:imgData.mimeType,data:imgData.base64}},
+      {type:'text',text:textContent||'Analiza esta imagen y dime qué ves. Dame tu perspectiva como '+sp.name+'.'}
+    ];
+  } else {
+    msgContent=textContent;
+  }
+
+  try{
+    const resp=await callAnthropic([{role:'user',content:msgContent}],sp.prompt,800);
+    return{id:sp.id,name:sp.name,category:sp.category,ok:true,response:resp,ms:Date.now()-start};
+  }catch(e){
+    return{id:sp.id,name:sp.name,category:sp.category,ok:false,response:'Error: '+e.message,ms:Date.now()-start};
+  }
+}
+
+// ── ANTHROPIC API ─────────────────────────────────────────────────────────
+// ── BACKEND PROXY (Railway) ────────────────────────────────────────────────
+// Calls our server at /api/chat instead of Anthropic directly.
+// The API key is kept securely in Railway environment variables.
+async function callAnthropic(messages,system,maxTokens){
+  let resp;
+  try{
+    resp=await fetch('/api/chat',{
+      method:'POST',
+      headers:{'content-type':'application/json'},
+      body:JSON.stringify({messages,system,max_tokens:maxTokens,model:'claude-haiku-4-5-20251001'})
+    });
+  }catch(netErr){
+    toast('❌ Error de red: '+netErr.message);
+    throw netErr;
+  }
+  if(!resp.ok){
+    let errMsg='HTTP '+resp.status;
+    try{const e=await resp.json();errMsg=e.detail||errMsg;}catch(x){}
+    if(resp.status===401)toast('❌ API key del servidor inválida — contacta al administrador');
+    else if(resp.status===429)toast('⚠️ Límite de velocidad — espera un momento','warn');
+    else toast('❌ Error ('+resp.status+'): '+errMsg);
+    throw new Error(errMsg);
+  }
+  const d=await resp.json();
+  return d.text;
+}
+
+// ── DOM HELPERS ───────────────────────────────────────────────────────────
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function fmt(s){return esc(s).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/`(.+?)`/g,'<code style="background:var(--bg3);padding:1px 4px;border-radius:3px;font-size:10px">$1</code>').replace(/\n/g,'<br>')}
+function scrollBot(){const m=document.getElementById('msgs');requestAnimationFrame(()=>m.scrollTop=m.scrollHeight)}
+
+function addUserMsg(text, files){
+  const m=document.getElementById('msgs');
+  const d=document.createElement('div');
+  d.className='msg-u fi';
+  let extras='';
+  if(files&&files.length){
+    // Images: show thumbnails
+    const imgs=files.filter(f=>f.isImage);
+    const docs=files.filter(f=>!f.isImage);
+    if(imgs.length){
+      extras+=`<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px">`+
+        imgs.map(f=>`<img src="data:${f.mimeType};base64,${f.base64}" style="height:80px;width:80px;object-fit:cover;border-radius:8px;border:1px solid var(--border)" title="${esc(f.name)}"/>`).join('')+
+        `</div>`;
+    }
+    if(docs.length){
+      extras+=`<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:4px">`+
+        docs.map(f=>`<div class="file-badge">📄 ${esc(f.name)}</div>`).join('')+
+        `</div>`;
+    }
+  }
+  d.innerHTML=`<div class="bubble-u">${esc(text)}${extras}</div>`;
+  m.appendChild(d);scrollBot();
+}
+
+function addPlaceholder(rid,pid,grid){
+  const m=document.getElementById('msgs');
+  const d=document.createElement('div');
+  d.className='fi';d.id='blk-'+rid;
+  d.innerHTML=`
+    <div class="rc" id="${rid}"><span style="font-size:18px">🔀</span>
+      <div class="rc-info"><div class="rc-title">Router Maestro</div>
+      <div class="typing"><span></span><span></span><span></span></div></div></div>
+    <div id="${pid}" style="display:none"></div>
+    <div id="log-${rid}" style="display:none"></div>
+    <div id="${grid}" class="res-grid" style="margin-top:8px"></div>`;
+  m.appendChild(d);scrollBot();
+}
+
+// ── ACTIVITY LOG ───────────────────────────────────────────────────────────
+let _currentLogId=null;
+let _actStates={};
+
+function initActivityLog(rid, specialists){
+  _currentLogId=rid;
+  _actStates={};
+  const wrap=document.getElementById('log-'+rid);
+  if(!wrap)return;
+  wrap.style.display='block';
+  wrap.innerHTML=`<div class="act-log" id="actlog-${rid}">
+    <div style="font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">⚡ Actividad en tiempo real</div>
+  </div>`;
+}
+
+function logActivity(rid, sp, state, ms){
+  const log=document.getElementById('actlog-'+rid);
+  if(!log)return;
+  const key='arow-'+rid+'-'+sp.id;
+  const iconClass=state==='working'?'spin':state==='done'?'done':'err';
+  const icon=state==='working'?'⚙':state==='done'?'✓':'✗';
+  const statusTxt=state==='working'?'Procesando...':state==='done'?'Completado':'Error';
+  const msTxt=ms?`<span class="act-ms">${ms}ms</span>`:'';
+  const emoji=catEmoji(sp.category||'');
+  const rowHtml=`<div class="act-row" id="${key}">
+    <div class="act-icon ${iconClass}">${icon}</div>
+    <span style="font-size:10px;color:var(--text3);min-width:22px">[${sp.id}]</span>
+    <span class="act-name">${emoji} ${sp.name}</span>
+    <span class="act-status">${statusTxt}${msTxt}</span>
+  </div>`;
+  const existing=document.getElementById(key);
+  if(existing){existing.outerHTML=rowHtml;}
+  else{log.insertAdjacentHTML('beforeend',rowHtml);}
+  log.scrollTop=log.scrollHeight;
+}
+
+function showRouting(rid,info){
+  const el=document.getElementById(rid);if(!el)return;
+  const sps=info.specialists||[];
+  const strat={'single':'1 Especialista','parallel':`${sps.length} en Paralelo`,'sequential':`${sps.length} en Cadena`}[info.strategy]||info.strategy;
+  let chips=sps.slice(0,15).map(s=>`<span class="chip">[${s.id}] ${s.name||s.id}</span>`).join('');
+  if(sps.length>15)chips+=`<span class="chip">+${sps.length-15} más</span>`;
+  el.innerHTML=`<span style="font-size:18px">🔀</span>
+    <div class="rc-info">
+      <div class="rc-title"><strong style="color:var(--accent)">${strat}</strong>
+        ${info.reasoning?`<span style="font-size:10px;color:var(--text3);margin-left:6px">${esc(info.reasoning.substring(0,70))}</span>`:''}
+      </div>
+      <div>${chips}</div>
+    </div>`;
+  scrollBot();
+}
+
+function showProgress(pid,done,total){
+  const el=document.getElementById(pid);if(!el)return;
+  el.style.display='';
+  el.innerHTML=`<div class="prog-wrap">
+    <div class="prog-lbl"><span id="${pid}-lbl">0 / ${total}</span><span id="${pid}-pct">0%</span></div>
+    <div class="prog-bar"><div class="prog-fill" id="${pid}-fill" style="width:0%"></div></div>
+  </div>`;
+}
+
+function updateProgress(pid,done,total){
+  const pct=total>0?Math.round(done/total*100):0;
+  const f=document.getElementById(pid+'-fill');
+  const l=document.getElementById(pid+'-lbl');
+  const p=document.getElementById(pid+'-pct');
+  if(f)f.style.width=pct+'%';
+  if(l)l.textContent=`${done} / ${total} especialistas`;
+  if(p)p.textContent=pct+'%';
+}
+
+function showResults(grid,results,rid,originalMsg){
+  const el=document.getElementById(grid);if(!el)return;
+  const ok=results.filter(r=>r.ok);
+
+  if(results.length===1){
+    const r=results[0];
+    el.style.cssText='margin-top:10px';
+    el.innerHTML=`<div class="msg-s">
+      <div class="av">${catEmoji(r.category)}</div>
+      <div class="mc">
+        <div class="mh"><span class="mn">${esc(r.name)}</span><span class="mcat">${esc(r.category)}</span><span class="mt">${r.ms}ms</span></div>
+        <div class="mb">${fmt(r.response)}</div>
+      </div>
+    </div>`;
+    addContinuationBar(el, results, originalMsg);
+    scrollBot();return;
+  }
+
+  let h=results.map(r=>`
+    <div class="res-card${r.ok?'':' err'}">
+      <div class="rch"><span class="rcid">[${r.id}]</span><span class="rcn">${esc(r.name)}</span><span class="rct">${r.ms}ms</span></div>
+      <div class="rcb">${fmt(r.response.substring(0,180))}</div>
+      ${r.response.length>180?`<div class="rc-more" onclick="openModal('${esc(r.id)}','${esc(r.name)}',\`${r.response.replace(/`/g,'\\`')}\`)">Ver completo ↗</div>`:''}
+    </div>`).join('');
+  h+=`<div style="grid-column:1/-1;text-align:center;font-size:11px;color:var(--text3);padding:6px">✅ ${ok.length}/${results.length} completados</div>`;
+  el.innerHTML=h;
+  addContinuationBar(el, results, originalMsg);
+  scrollBot();
+}
+
+// ── CONTINUATION OPTIONS ───────────────────────────────────────────────────
+function addContinuationBar(container, results, originalMsg){
+  const ok=results.filter(r=>r.ok);
+  if(!ok.length)return;
+  const firstName=ok[0].name;
+  const hasMultiple=ok.length>1;
+
+  const options=[
+    {label:'📝 Resumir todo', action:`summarize`, show: hasMultiple},
+    {label:'🔍 Profundizar', action:`deepen`, show: true},
+    {label:'❓ Seguimiento', action:`followup`, show: true},
+    {label:'⚖️ Comparar respuestas', action:`compare`, show: hasMultiple},
+    {label:'✅ Plan de acción', action:`actionplan`, show: true},
+    {label:'🔄 Otro ángulo', action:`reframe`, show: true},
+  ].filter(o=>o.show);
+
+  const bar=document.createElement('div');
+  bar.className='cont-bar';
+  bar.innerHTML=options.map(o=>
+    `<button class="cont-btn${o.action==='deepen'?' primary':''}" onclick="continuationAction('${o.action}',${JSON.stringify(originalMsg||'')},${JSON.stringify(ok.map(r=>({id:r.id,name:r.name,response:r.response.substring(0,300)})))})">
+      ${o.label}
+    </button>`
+  ).join('');
+  container.appendChild(bar);
+}
+
+async function continuationAction(action, originalMsg, prevResults){
+  const inp=document.getElementById('inp');
+  const names=prevResults.map(r=>r.name).join(', ');
+  const context=prevResults.map(r=>`[${r.name}]: ${r.response}`).join('\n\n');
+  const prompts={
+    summarize: `Resume en un solo párrafo claro las respuestas de estos especialistas sobre: "${originalMsg}". Contexto:\n${context}`,
+    deepen: `Profundiza más en el tema: "${originalMsg}". Dame análisis más detallado con ejemplos concretos y pasos.`,
+    followup: `Basándote en las respuestas anteriores sobre "${originalMsg}", ¿cuáles son las preguntas clave que debería hacerme ahora? Contexto:\n${context}`,
+    compare: `Compara y contrasta las perspectivas de estos especialistas sobre "${originalMsg}" y dime cuál enfoque te parece más sólido y por qué:\n${context}`,
+    actionplan: `Crea un plan de acción concreto de 5 pasos basado en las respuestas sobre "${originalMsg}":\n${context}`,
+    reframe: `Analiza "${originalMsg}" desde un ángulo completamente diferente al que se abordó. Sé disruptivo y creativo.`,
+  };
+  inp.value=prompts[action]||prompts.followup;
+  inp.style.height='auto';
+  inp.style.height=Math.min(inp.scrollHeight,140)+'px';
+  inp.focus();
+  // Scroll to input
+  inp.scrollIntoView({behavior:'smooth',block:'end'});
+}
+
+function openModal(id,name,body){
+  document.getElementById('mTitle').textContent=name;
+  document.getElementById('mBody').textContent=body;
+  document.getElementById('overlay').classList.remove('h');
+}
+function closeModal(e){if(e.target===document.getElementById('overlay'))document.getElementById('overlay').classList.add('h')}
+
+function markBusy(id){
+  const d=document.getElementById('spd-'+id);if(d)d.className='sp-dot r';
+  const c=document.getElementById('spc-'+id);if(c)c.classList.add('busy');
+}
+function markDone(id,ok){
+  const d=document.getElementById('spd-'+id);if(d)d.className='sp-dot '+(ok?'d':'e');
+  const c=document.getElementById('spc-'+id);if(c){c.classList.remove('busy');c.classList.add(ok?'done':'')}
+}
+function resetDots(){document.querySelectorAll('.sp-dot').forEach(e=>e.className='sp-dot');document.querySelectorAll('.sp-card').forEach(e=>{e.classList.remove('busy','done')})}
+
+// ── INIT ──────────────────────────────────────────────────────────────────
+// Load specialists from server, then render
+(async()=>{
+  try{
+    const r=await fetch('/api/specialists');
+    SPECIALISTS=await r.json();
+  }catch(e){console.error('Failed to load specialists',e);}
+  renderSidebar(SPECIALISTS);
+  document.getElementById('sendBtn').disabled=false;
+})();
+</script>
+</body>
+</html>
