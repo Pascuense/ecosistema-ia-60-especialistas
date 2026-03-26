@@ -801,7 +801,7 @@ function markBusy(id){
 }
 function markDone(id,ok){
   const d=document.getElementById('spd-'+id);if(d)d.className='sp-dot '+(ok?'d':'e');
-  const c=document.getElementById('spc-'+id);if(c){c.classList.remove('busy');c.classList.add(ok?'done':'')}
+  const c=document.getElementById('spc-'+id);if(c){c.classList.remove('busy');if(ok)c.classList.add('done');else c.classList.add('error');}
 }
 function resetDots(){document.querySelectorAll('.sp-dot').forEach(e=>e.className='sp-dot');document.querySelectorAll('.sp-card').forEach(e=>{e.classList.remove('busy','done')})}
 
