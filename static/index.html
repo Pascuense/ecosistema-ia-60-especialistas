@@ -760,11 +760,14 @@ function addContinuationBar(container, results, originalMsg){
 
   const bar=document.createElement('div');
   bar.className='cont-bar';
-  bar.innerHTML=options.map(o=>
-    `<button class="cont-btn${o.action==='deepen'?' primary':''}" onclick="continuationAction('${o.action}',${JSON.stringify(originalMsg||'')},${JSON.stringify(ok.map(r=>({id:r.id,name:r.name,response:r.response.substring(0,300)})))})">
-      ${o.label}
-    </button>`
-  ).join('');
+  const prevResults=ok.map(r=>({id:r.id,name:r.name,response:r.response.substring(0,300)}));
+  options.forEach(o=>{
+    const btn=document.createElement('button');
+    btn.className='cont-btn'+(o.action==='deepen'?' primary':'');
+    btn.textContent=o.label;
+    btn.addEventListener('click',()=>continuationAction(o.action,originalMsg||'',prevResults));
+    bar.appendChild(btn);
+  });
   container.appendChild(bar);
 }
 
