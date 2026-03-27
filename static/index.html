@@ -3,13 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>🦁 Ecosistema IA — 60 Especialistas</title>
+<title>Ecosistema IA — 60 Especialistas</title>
 <style>
 :root{
-  --bg:#0f1117;--bg2:#161b27;--bg3:#1e2535;--border:#2a3347;
-  --accent:#f5a623;--accent2:#e8922a;--green:#10b981;--red:#ef4444;
-  --blue:#3b82f6;--purple:#8b5cf6;--text:#e2e8f0;--text2:#94a3b8;
+  --bg:#06080d;--bg2:#0c1018;--bg3:#121820;--border:#1c2535;
+  --accent:#00d4ff;--accent2:#a855f7;--green:#10b981;--red:#ef4444;
+  --blue:#3b82f6;--purple:#a855f7;--text:#e2e8f0;--text2:#94a3b8;
   --text3:#64748b;--radius:12px;
+  --grad:linear-gradient(135deg,#00d4ff,#a855f7,#ec4899);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);height:100vh;display:flex;flex-direction:column;overflow:hidden}
@@ -20,8 +21,8 @@ header{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 20p
 .key-input{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:5px 10px;color:var(--text);font-size:12px;outline:none;width:230px}
 .key-input:focus{border-color:var(--accent)}
 .key-input.ok{border-color:var(--green)}
-.btn-fire{padding:6px 16px;border-radius:20px;border:none;background:linear-gradient(135deg,#f5a623,#e8432d);color:#000;font-weight:800;font-size:12px;cursor:pointer;transition:all .15s;letter-spacing:.5px}
-.btn-fire:hover{transform:scale(1.04);box-shadow:0 0 16px rgba(245,166,35,.4)}
+.btn-fire{padding:6px 16px;border-radius:20px;border:none;background:var(--grad);color:#000;font-weight:800;font-size:12px;cursor:pointer;transition:all .15s;letter-spacing:.5px}
+.btn-fire:hover{transform:scale(1.04);box-shadow:0 0 16px rgba(0,212,255,.4)}
 .status-dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green)}
 .status-dot.off{background:var(--red);box-shadow:0 0 6px var(--red)}
 .main{display:flex;flex:1;overflow:hidden}
@@ -38,7 +39,7 @@ header{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 20p
 .cat-h{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;padding:10px 6px 4px}
 .sp-card{padding:7px 8px;border-radius:8px;cursor:pointer;transition:all .12s;margin-bottom:1px;border:1px solid transparent;display:flex;align-items:center;gap:6px}
 .sp-card:hover{background:var(--bg3);border-color:var(--border)}
-.sp-card.sel{background:rgba(245,166,35,.12);border-color:rgba(245,166,35,.3)}
+.sp-card.sel{background:rgba(0,212,255,.10);border-color:rgba(0,212,255,.3)}
 .sp-card.busy{border-color:var(--accent)}
 .sp-card.done{border-color:var(--green)}
 .sp-id{font-size:10px;font-weight:700;color:var(--text3);min-width:22px}
@@ -55,7 +56,7 @@ header{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 20p
 .msgs::-webkit-scrollbar{width:5px}
 .msgs::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
 .msg-u{display:flex;justify-content:flex-end}
-.bubble-u{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#000;padding:9px 14px;border-radius:16px 16px 4px 16px;max-width:70%;font-size:13px;font-weight:500;line-height:1.5}
+.bubble-u{background:var(--grad);color:#000;padding:9px 14px;border-radius:16px 16px 4px 16px;max-width:70%;font-size:13px;font-weight:500;line-height:1.5}
 .msg-s{display:flex;gap:8px;align-items:flex-start}
 .av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;background:var(--bg3);border:1px solid var(--border)}
 .mc{flex:1;min-width:0}
@@ -68,7 +69,7 @@ header{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 20p
 .rc{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius);padding:10px 14px;display:flex;align-items:flex-start;gap:8px;font-size:12px}
 .rc-info{flex:1}
 .rc-title{font-weight:700;color:var(--text2);margin-bottom:5px;font-size:11px;text-transform:uppercase;letter-spacing:.5px}
-.chip{display:inline-block;padding:2px 7px;border-radius:10px;font-size:10px;font-weight:600;background:rgba(245,166,35,.15);border:1px solid rgba(245,166,35,.3);color:var(--accent);margin:2px}
+.chip{display:inline-block;padding:2px 7px;border-radius:10px;font-size:10px;font-weight:600;background:rgba(0,212,255,.12);border:1px solid rgba(0,212,255,.3);color:var(--accent);margin:2px}
 /* progress */
 .prog-wrap{margin-top:8px}
 .prog-bar{height:3px;background:var(--border);border-radius:2px;overflow:hidden;margin-top:5px}
@@ -101,8 +102,8 @@ header{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 20p
 /* continuation */
 .cont-bar{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;padding:8px 0 4px}
 .cont-btn{padding:6px 13px;border-radius:20px;border:1px solid var(--border);background:var(--bg2);color:var(--text2);font-size:11px;cursor:pointer;transition:all .15s;font-family:inherit}
-.cont-btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(245,166,35,.08)}
-.cont-btn.primary{border-color:var(--accent);color:var(--accent);background:rgba(245,166,35,.1)}
+.cont-btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(0,212,255,.08)}
+.cont-btn.primary{border-color:var(--accent);color:var(--accent);background:rgba(0,212,255,.1)}
 /* welcome */
 .welcome{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;text-align:center;padding:40px;gap:14px;color:var(--text2)}
 .welcome h2{font-size:20px;font-weight:700;color:var(--text)}
@@ -156,7 +157,7 @@ textarea::placeholder{color:var(--text3)}
 <body>
 
 <header>
-  <div class="logo">🦁 Ecosistema IA <small>60 Especialistas</small></div>
+  <div class="logo" style="display:flex;align-items:center;gap:10px"><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" width="34" height="34" style="flex-shrink:0"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#00e5ff"/><stop offset="50%" stop-color="#b06aff"/><stop offset="100%" stop-color="#ff5fcb"/></linearGradient></defs><path d="M8 42 C8 42 8 18 22 13 C29 10 32 24 32 24 C32 24 35 10 42 13 C56 18 56 42 56 42" fill="none" stroke="url(#lg)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 22 C8 22 8 46 22 51 C29 54 32 40 32 40 C32 40 35 54 42 51 C56 46 56 22 56 22" fill="none" stroke="url(#lg)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg><span style="background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Ecosistema IA</span> <small>60 Especialistas</small></div>
   <div class="status-dot" id="dot" style="background:var(--green);box-shadow:0 0 6px var(--green)"></div>
   <span id="stxt" style="font-size:11px;color:var(--text3)">Listo</span>
   <div class="hright">
@@ -177,7 +178,7 @@ textarea::placeholder{color:var(--text3)}
   <div class="chat">
     <div class="msgs" id="msgs">
       <div class="welcome" id="welcome">
-        <div style="font-size:60px">🦁</div>
+        <div><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" width="80" height="80"><defs><linearGradient id="lgw" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#00e5ff"/><stop offset="50%" stop-color="#b06aff"/><stop offset="100%" stop-color="#ff5fcb"/></linearGradient></defs><path d="M8 42 C8 42 8 18 22 13 C29 10 32 24 32 24 C32 24 35 10 42 13 C56 18 56 42 56 42" fill="none" stroke="url(#lgw)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 22 C8 22 8 46 22 51 C29 54 32 40 32 40 C32 40 35 54 42 51 C56 46 56 22 56 22" fill="none" stroke="url(#lgw)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         <h2>Ecosistema de 60 Especialistas de IA</h2>
         <p>Pega tu <strong>Anthropic API key</strong> arriba, luego escribe tu consulta.<br>
         El Router Maestro elegirá los mejores especialistas automáticamente.</p>
@@ -718,7 +719,7 @@ function showResults(grid,results,rid,originalMsg){
 
   if(results.length===1){
     const r=results[0];
-    el.style.cssText='margin-top:10px';
+    el.style.cssText='display:block;margin-top:10px';
     el.innerHTML=`<div class="msg-s">
       <div class="av">${catEmoji(r.category)}</div>
       <div class="mc">
