@@ -768,7 +768,9 @@ function addContinuationBar(container, results, originalMsg){
     btn.addEventListener('click',()=>continuationAction(o.action,originalMsg||'',prevResults));
     bar.appendChild(btn);
   });
-  container.appendChild(bar);
+  const mc=container.querySelector('.mc');
+  if(mc) mc.appendChild(bar);
+  else container.appendChild(bar);
 }
 
 async function continuationAction(action, originalMsg, prevResults){
