@@ -37,11 +37,14 @@ header{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 20p
 .sb-list::-webkit-scrollbar{width:3px}
 .sb-list::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
 .cat-h{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;padding:10px 6px 4px}
-.sp-card{padding:7px 8px;border-radius:8px;cursor:pointer;transition:all .12s;margin-bottom:1px;border:1px solid transparent;display:flex;align-items:center;gap:6px}
+.sp-card{padding:7px 8px;border-radius:8px;cursor:pointer;position:relative;transition:all .12s;margin-bottom:1px;border:1px solid transparent;display:flex;align-items:center;gap:6px}
 .sp-card:hover{background:var(--bg3);border-color:var(--border)}
 .sp-card.sel{background:rgba(0,212,255,.10);border-color:rgba(0,212,255,.3)}
 .sp-card.busy{border-color:var(--accent)}
 .sp-card.done{border-color:var(--green)}
+.sp-card::after{content:'👆 Clic = solo este';position:absolute;bottom:calc(100% + 4px);left:50%;transform:translateX(-50%);background:#0c1018;border:1px solid rgba(0,212,255,.3);color:var(--accent);font-size:9px;padding:3px 7px;border-radius:6px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .15s;z-index:10}
+.sp-card:hover::after{opacity:1}
+.sp-card.sel::after{content:'✓ Seleccionado — solo este'}
 .sp-id{font-size:10px;font-weight:700;color:var(--text3);min-width:22px}
 .sp-info{flex:1;min-width:0}
 .sp-name{font-size:11px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -148,6 +151,22 @@ textarea::placeholder{color:var(--text3)}
 .file-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(245,166,35,.15);border:1px solid rgba(245,166,35,.25);border-radius:6px;padding:2px 7px;font-size:10px;color:var(--accent);margin-top:4px}
 .btn-attach{width:36px;height:36px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0}
 .btn-attach:hover{border-color:var(--accent);color:var(--accent)}
+/* landing */
+#landing{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px}
+.land-box{max-width:520px;width:100%;text-align:center}
+.land-logo{margin-bottom:20px}
+.land-title{font-size:28px;font-weight:800;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px}
+.land-sub{color:var(--text2);font-size:14px;margin-bottom:32px}
+.land-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:32px}
+.land-step{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:18px 14px;text-align:center}
+.land-step-num{width:32px;height:32px;border-radius:50%;background:var(--grad);color:#000;font-weight:900;font-size:15px;display:flex;align-items:center;justify-content:center;margin:0 auto 10px}
+.land-step-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px}
+.land-step-desc{font-size:11px;color:var(--text3);line-height:1.4}
+.land-modes{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:28px}
+.land-mode{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:6px 14px;font-size:11px;color:var(--text2)}
+.land-mode strong{color:var(--accent)}
+.land-cta{padding:14px 40px;border-radius:30px;border:none;background:var(--grad);color:#000;font-weight:900;font-size:16px;cursor:pointer;letter-spacing:.5px;transition:all .2s}
+.land-cta:hover{transform:scale(1.04);box-shadow:0 0 24px rgba(0,212,255,.4)}
 </style>
 <!-- PDF.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -155,6 +174,39 @@ textarea::placeholder{color:var(--text3)}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 </head>
 <body>
+<div id="landing">
+  <div class="land-box">
+    <div class="land-logo">
+      <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" width="64" height="64"><defs><linearGradient id="lgl" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#00e5ff"/><stop offset="50%" stop-color="#b06aff"/><stop offset="100%" stop-color="#ff5fcb"/></linearGradient></defs><path d="M8 42 C8 42 8 18 22 13 C29 10 32 24 32 24 C32 24 35 10 42 13 C56 18 56 42 56 42" fill="none" stroke="url(#lgl)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 22 C8 22 8 46 22 51 C29 54 32 40 32 40 C32 40 35 54 42 51 C56 46 56 22 56 22" fill="none" stroke="url(#lgl)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <div class="land-title">Ecosistema IA</div>
+    <div class="land-sub">60 especialistas de inteligencia artificial a tu disposición</div>
+    <div class="land-steps">
+      <div class="land-step">
+        <div class="land-step-num">1</div>
+        <div class="land-step-title">Elige modo</div>
+        <div class="land-step-desc">Auto-router, un solo especialista, equipo, o los 60 en paralelo</div>
+      </div>
+      <div class="land-step">
+        <div class="land-step-num">2</div>
+        <div class="land-step-title">Escribe tu consulta</div>
+        <div class="land-step-desc">Cualquier tema: negocio, código, legal, marketing, estrategia…</div>
+      </div>
+      <div class="land-step">
+        <div class="land-step-num">3</div>
+        <div class="land-step-title">Recibe respuestas</div>
+        <div class="land-step-desc">Profundiza, pide seguimiento o un plan de acción con un clic</div>
+      </div>
+    </div>
+    <div class="land-modes">
+      <span class="land-mode"><strong>🤖 Auto</strong> — el router elige los mejores</span>
+      <span class="land-mode"><strong>👆 Clic</strong> en un especialista para chatear solo con él</span>
+      <span class="land-mode"><strong>👥 Selección</strong> — elige tu equipo de expertos</span>
+      <span class="land-mode"><strong>🔥 ALL 60</strong> — todos en paralelo</span>
+    </div>
+    <button class="land-cta" onclick="enterApp()">Comenzar →</button>
+  </div>
+</div>
 
 <header>
   <div class="logo" style="display:flex;align-items:center;gap:10px"><svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" width="34" height="34" style="flex-shrink:0"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#00e5ff"/><stop offset="50%" stop-color="#b06aff"/><stop offset="100%" stop-color="#ff5fcb"/></linearGradient></defs><path d="M8 42 C8 42 8 18 22 13 C29 10 32 24 32 24 C32 24 35 10 42 13 C56 18 56 42 56 42" fill="none" stroke="url(#lg)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 22 C8 22 8 46 22 51 C29 54 32 40 32 40 C32 40 35 54 42 51 C56 46 56 22 56 22" fill="none" stroke="url(#lg)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg><span style="background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Ecosistema IA</span> <small>60 Especialistas</small></div>
@@ -172,6 +224,7 @@ textarea::placeholder{color:var(--text3)}
       <span class="cnt">60</span>
     </div>
     <input class="sb-search" type="text" placeholder="🔍 Buscar..." oninput="filterSidebar(this.value)" />
+    <div style="font-size:10px;color:var(--text3);text-align:center;padding:4px 0 2px;opacity:.7">👆 Clic en un especialista para chatear solo con él</div>
     <div class="sb-list" id="sbList"></div>
   </aside>
 
@@ -821,6 +874,11 @@ function resetDots(){document.querySelectorAll('.sp-dot').forEach(e=>e.className
   renderSidebar(SPECIALISTS);
   document.getElementById('sendBtn').disabled=false;
 })();
+
+function enterApp(){
+  const el=document.getElementById('landing');
+  if(el){el.style.transition='opacity .4s';el.style.opacity='0';setTimeout(()=>el.remove(),400);}
+}
 </script>
 </body>
 </html>
