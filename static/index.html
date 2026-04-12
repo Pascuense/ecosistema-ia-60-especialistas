@@ -438,7 +438,7 @@ function renderSidebar(list){
   for(const[cat,items]of Object.entries(cats)){
     h+=`<div class="cat-h">${catEmoji(cat)} ${cat}</div>`;
     items.forEach(sp=>{
-      const s=selected.has(sp.id)?'sel':'';
+      const s=selected.has(String(sp.id))?'sel':'';
       h+=`<div class="sp-card ${s}" id="spc-${sp.id}" onclick="toggle('${sp.id}',this)">
         <span class="sp-id">${sp.id}</span>
         <div class="sp-info"><div class="sp-name">${sp.name}</div><div class="sp-tag">${sp.tagline||sp.role||''}</div></div>
@@ -460,6 +460,7 @@ function filterSidebar(q){
 }
 
 function toggle(id,el){
+  id=String(id);
   if(selected.has(id)){selected.delete(id);el.classList.remove('sel')}
   else{selected.add(id);el.classList.add('sel')}
   updateModeUI();
@@ -524,13 +525,13 @@ async function send(){
     toRun=SPECIALISTS;
     showRouting(rid,{strategy:'parallel',specialists:SPECIALISTS,reasoning:'MODO ALL — los 60 especialistas en paralelo'});
   } else if(mode==='team'||mode==='seq'){
-    toRun=SPECIALISTS.filter(s=>selected.has(s.id));
+    toRun=SPECIALISTS.filter(s=>selected.has(String(s.id)));
     showRouting(rid,{strategy:mode==='seq'?'sequential':'parallel',specialists:toRun,reasoning:`${toRun.length} especialistas seleccionados`});
   } else {
     // Auto-route via Anthropic
     try{
       const routing=await autoRoute(msg+fileContext);
-      toRun=SPECIALISTS.filter(s=>routing.ids.includes(s.id));
+      toRun=SPECIALISTS.filter(s=>routing.ids.some(id=>Number(id)===Number(s.id)));
       if(!toRun.length)toRun=[SPECIALISTS[0]];
       showRouting(rid,{strategy:routing.strategy,specialists:toRun,reasoning:routing.reasoning});
     }catch(e){
