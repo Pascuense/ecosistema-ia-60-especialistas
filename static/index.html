@@ -167,6 +167,38 @@ textarea::placeholder{color:var(--text3)}
 .land-mode strong{color:var(--accent)}
 .land-cta{padding:14px 40px;border-radius:30px;border:none;background:var(--grad);color:#000;font-weight:900;font-size:16px;cursor:pointer;letter-spacing:.5px;transition:all .2s}
 .land-cta:hover{transform:scale(1.04);box-shadow:0 0 24px rgba(0,212,255,.4)}
+/* wizard */
+#wizard{position:fixed;inset:0;z-index:9998;background:var(--bg);display:none;align-items:center;justify-content:center;padding:20px;overflow-y:auto}
+.wiz-box{max-width:560px;width:100%}
+.wiz-prog{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:32px}
+.wiz-dot{width:32px;height:32px;border-radius:50%;border:2px solid var(--border);background:var(--bg2);color:var(--text3);font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;transition:all .3s;flex-shrink:0}
+.wiz-dot.active{background:var(--grad);border-color:transparent;color:#000}
+.wiz-dot.done{background:var(--green);border-color:transparent;color:#fff}
+.wiz-line{flex:1;max-width:60px;height:2px;background:var(--border);transition:background .3s}
+.wiz-line.done{background:var(--green)}
+.wiz-title{font-size:22px;font-weight:800;text-align:center;margin-bottom:6px;color:var(--text)}
+.wiz-sub{font-size:13px;color:var(--text3);text-align:center;margin-bottom:24px;line-height:1.5}
+.wiz-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:24px}
+.wiz-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:14px 8px;text-align:center;cursor:pointer;transition:all .15s;font-size:11px;color:var(--text2);line-height:1.3}
+.wiz-card:hover{border-color:var(--accent);color:var(--accent);background:rgba(0,212,255,.06)}
+.wiz-card.sel{border-color:var(--accent);background:rgba(0,212,255,.12);color:var(--accent)}
+.wiz-icon{font-size:22px;display:block;margin-bottom:6px}
+.wiz-modes{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:24px}
+.wiz-mc{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:18px 16px;cursor:pointer;transition:all .15s}
+.wiz-mc:hover{border-color:var(--accent);background:rgba(0,212,255,.06)}
+.wiz-mc.sel{border-color:var(--accent);background:rgba(0,212,255,.10)}
+.wiz-mi{font-size:28px;margin-bottom:8px}
+.wiz-mt{font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px}
+.wiz-md{font-size:11px;color:var(--text3);line-height:1.4}
+.wiz-ctx{width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px;color:var(--text);font-size:13px;font-family:inherit;resize:none;outline:none;transition:border-color .15s;margin-bottom:16px;box-sizing:border-box}
+.wiz-ctx:focus{border-color:var(--accent)}
+.wiz-btns{display:flex;gap:10px;justify-content:center;align-items:center}
+.wiz-skip{padding:10px 22px;border-radius:24px;border:1px solid var(--border);background:transparent;color:var(--text3);font-size:12px;cursor:pointer;transition:all .15s;font-family:inherit}
+.wiz-skip:hover{border-color:var(--accent);color:var(--accent)}
+.wiz-next{padding:12px 30px;border-radius:24px;border:none;background:var(--grad);color:#000;font-weight:900;font-size:14px;cursor:pointer;transition:all .2s;font-family:inherit;letter-spacing:.3px}
+.wiz-next:hover{transform:scale(1.04);box-shadow:0 0 20px rgba(0,212,255,.35)}
+.wiz-back{padding:10px 18px;border-radius:24px;border:1px solid var(--border);background:transparent;color:var(--text3);font-size:12px;cursor:pointer;transition:all .15s;font-family:inherit;margin-right:auto}
+.wiz-back:hover{color:var(--text);border-color:var(--text2)}
 </style>
 <!-- PDF.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -205,6 +237,70 @@ textarea::placeholder{color:var(--text3)}
       <span class="land-mode"><strong>🔥 ALL 60</strong> — todos en paralelo</span>
     </div>
     <button class="land-cta" onclick="enterApp()">Comenzar →</button>
+  </div>
+</div>
+<div id="wizard">
+  <div class="wiz-box">
+    <div class="wiz-prog">
+      <div class="wiz-dot active" id="wd1">1</div><div class="wiz-line" id="wl1"></div>
+      <div class="wiz-dot" id="wd2">2</div><div class="wiz-line" id="wl2"></div>
+      <div class="wiz-dot" id="wd3">3</div>
+    </div>
+    <div id="ws1">
+      <div class="wiz-title">¿Qué necesitas hoy?</div>
+      <div class="wiz-sub">Elige el área principal para que el sistema configure los mejores especialistas</div>
+      <div class="wiz-grid">
+        <div class="wiz-card" onclick="wizArea(this,'negocio')"><span class="wiz-icon">🚀</span>Estrategia<br>de Negocio</div>
+        <div class="wiz-card" onclick="wizArea(this,'tech')"><span class="wiz-icon">💻</span>Código<br>/ Tech</div>
+        <div class="wiz-card" onclick="wizArea(this,'marketing')"><span class="wiz-icon">📣</span>Marketing<br>/ Contenido</div>
+        <div class="wiz-card" onclick="wizArea(this,'legal')"><span class="wiz-icon">⚖️</span>Legal<br>/ Finanzas</div>
+        <div class="wiz-card" onclick="wizArea(this,'ia')"><span class="wiz-icon">🤖</span>IA<br>/ Automatización</div>
+        <div class="wiz-card" onclick="wizArea(this,'writing')"><span class="wiz-icon">✍️</span>Escribir<br>/ Redactar</div>
+        <div class="wiz-card" onclick="wizArea(this,'research')"><span class="wiz-icon">🔍</span>Investigar<br>/ Analizar</div>
+        <div class="wiz-card" onclick="wizArea(this,'other')"><span class="wiz-icon">💡</span>Otro<br>tema</div>
+      </div>
+      <div class="wiz-btns"><button class="wiz-next" onclick="wizGo(2)">Siguiente →</button></div>
+    </div>
+    <div id="ws2" style="display:none">
+      <div class="wiz-title">¿Cómo quieres trabajar?</div>
+      <div class="wiz-sub">Elige cómo el sistema responderá tus consultas</div>
+      <div class="wiz-modes">
+        <div class="wiz-mc sel" onclick="wizMode(this,'auto')">
+          <div class="wiz-mi">🤖</div>
+          <div class="wiz-mt">Auto-router</div>
+          <div class="wiz-md">El sistema elige automáticamente los mejores especialistas según tu consulta</div>
+        </div>
+        <div class="wiz-mc" onclick="wizMode(this,'one')">
+          <div class="wiz-mi">👆</div>
+          <div class="wiz-mt">Un especialista</div>
+          <div class="wiz-md">Elige uno del panel izquierdo para una conversación directa y profunda</div>
+        </div>
+        <div class="wiz-mc" onclick="wizMode(this,'team')">
+          <div class="wiz-mi">👥</div>
+          <div class="wiz-mt">Mi equipo</div>
+          <div class="wiz-md">Selecciona varios especialistas y consúltalos en paralelo</div>
+        </div>
+        <div class="wiz-mc" onclick="wizMode(this,'all')">
+          <div class="wiz-mi">🔥</div>
+          <div class="wiz-mt">Todos los 60</div>
+          <div class="wiz-md">Recibe perspectivas de todos los especialistas simultáneamente</div>
+        </div>
+      </div>
+      <div class="wiz-btns">
+        <button class="wiz-back" onclick="wizGo(1)">← Atrás</button>
+        <button class="wiz-next" onclick="wizGo(3)">Siguiente →</button>
+      </div>
+    </div>
+    <div id="ws3" style="display:none">
+      <div class="wiz-title">¿Tienes contexto clave?</div>
+      <div class="wiz-sub">Cuéntanos brevemente tu situación para que los especialistas te ayuden mejor (opcional)</div>
+      <textarea class="wiz-ctx" id="wiz-ctx" rows="5" placeholder="Ej: Tengo una startup de logística en Chile, 3 empleados, quiero escalar a Latam…"></textarea>
+      <div class="wiz-btns">
+        <button class="wiz-back" onclick="wizGo(2)">← Atrás</button>
+        <button class="wiz-skip" onclick="wizDone(false)">Saltar</button>
+        <button class="wiz-next" onclick="wizDone(true)">Comenzar →</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -876,9 +972,37 @@ function resetDots(){document.querySelectorAll('.sp-dot').forEach(e=>e.className
   document.getElementById('sendBtn').disabled=false;
 })();
 
+// ── WIZARD ─────────────────────────────────────────────────────────────────
+let _wArea='',_wMode='auto';
 function enterApp(){
-  const el=document.getElementById('landing');
-  if(el){el.style.transition='opacity .4s';el.style.opacity='0';setTimeout(()=>el.remove(),400);}
+  const l=document.getElementById('landing');
+  if(l){l.style.transition='opacity .4s';l.style.opacity='0';
+    setTimeout(()=>{l.remove();const w=document.getElementById('wizard');if(w)w.style.display='flex';},400);}
+}
+function wizArea(el,area){
+  document.querySelectorAll('#ws1 .wiz-card').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel');_wArea=area;
+}
+function wizMode(el,mode){
+  document.querySelectorAll('#ws2 .wiz-mc').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel');_wMode=mode;
+}
+function wizGo(n){
+  [1,2,3].forEach(i=>{
+    const s=document.getElementById('ws'+i);if(s)s.style.display=i===n?'block':'none';
+    const d=document.getElementById('wd'+i);
+    if(d){d.classList.remove('active','done');if(i<n)d.classList.add('done');else if(i===n)d.classList.add('active');}
+    const l=document.getElementById('wl'+i);if(l)l.classList.toggle('done',i<n);
+  });
+}
+function wizDone(useCtx){
+  const ctx=useCtx?(document.getElementById('wiz-ctx')?.value.trim()||''):'';
+  setMode('auto');
+  if(ctx){const inp=document.getElementById('inp');if(inp)inp.value=ctx;}
+  const hints={'one':'👆 Haz clic en un especialista del panel izquierdo','team':'👥 Selecciona especialistas del panel izquierdo','all':'🔥 Pulsa el botón ALL 60 para consultar a todos'};
+  if(hints[_wMode])setTimeout(()=>toast(hints[_wMode],'ok'),600);
+  const w=document.getElementById('wizard');
+  if(w){w.style.transition='opacity .4s';w.style.opacity='0';setTimeout(()=>w.remove(),400);}
 }
 </script>
 </body>
